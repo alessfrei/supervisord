@@ -1,0 +1,73 @@
+[program:nome_do_servico]
+command=/caminho/para/seu/script_ou_binario
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/nome_do_servico.err.log
+stdout_logfile=/var/log/nome_do_servico.out.log
+user=nome_do_usuario
+environment=VAR1='valor1',VAR2='valor2'
+directory=/caminho/do/diretorio/de/trabalho
+
+
+Explicação dos parâmetros:
+
+program:nome_do_servico: nome do serviço (supervisorctl start nome_do_servico)
+
+command: o que vai ser executado
+
+autostart: true
+
+autorestart: true
+
+stderr_logfile/stdout_logfile: 
+
+user: root
+
+environment: variáveis de ambiente
+
+directory: diretório (tipo cd antes de rodar)
+
+
+
+
+
+
+[program:wildfly]
+command=/opt/wildfly/bin/standalone.sh -b 0.0.0.0
+directory=/opt/wildfly/bin
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/wildfly/wildfly.err.log
+stdout_logfile=/var/log/wildfly/wildfly.out.log
+user=root
+environment=JAVA_HOME="/usr/lib/jvm/java-11-openjdk",JBOSS_HOME="/opt/wildfly"
+stopsignal=INT
+
+
+Explicação dos parâmetros:
+
+command: Comando para iniciar o WildFly (ajuste o caminho se necessário).
+
+directory: Diretório de trabalho onde o comando será executado.
+
+autostart: Inicia automaticamente com o Supervisor.
+
+autorestart: Reinicia se o processo cair.
+
+stderr_logfile e stdout_logfile: Caminhos para os logs de saída e erro.
+
+user: Usuário com permissões para rodar o WildFly.
+
+environment: Define variáveis de ambiente como JAVA_HOME e JBOSS_HOME.
+
+stopsignal=INT: Sinal de interrupção para encerramento limpo (usado por standalone.sh).
+
+sudo mkdir -p /var/log/wildfly
+sudo chown wildfly:wildfly /var/log/wildfly
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start wildfly
+
+
+
+
